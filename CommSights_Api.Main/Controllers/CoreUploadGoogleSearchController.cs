@@ -22,8 +22,8 @@ namespace CommSights_Api.Main.Controllers
             this.ICore = core;
             this.serviceProvider = serviceProvider;
         }
-        [HttpPost("UploadGoogleSearchUpdate")]
-        public async Task<ActionResult> UploadGoogleSearchUpdate(IFormFile file, int RequestUserID, int IndustryIDUploadGoogleSearch, bool IsIndustryIDUploadGoogleSearch, bool IsPriority)
+        [HttpPost("UploadGoogleSearch")]
+        public async Task<ActionResult> UploadGoogleSearch(IFormFile file, int RequestUserID, int IndustryIDUploadGoogleSearch, bool IsIndustryIDUploadGoogleSearch, bool IsPriority)
         {
             ReponserApiService<string> responseAPI = new ReponserApiService<string>();
             try
@@ -52,24 +52,24 @@ namespace CommSights_Api.Main.Controllers
                 return BadRequest(responseAPI);
             }
         }
-        [HttpPost("UploadGoogleSearch_Goc")]
-        public async Task<ActionResult> UploadGoogleSearch(IFormFile file, int RequestUserID, int IndustryIDUploadGoogleSearch, bool IsIndustryIDUploadGoogleSearch, bool IsPriority)
-        {
-            ReponserApiService<string> responseAPI = new ReponserApiService<string>();
-            try
-            {
-                var data = await ICore.UploadGoogleSearch(file, RequestUserID, IndustryIDUploadGoogleSearch, IsIndustryIDUploadGoogleSearch, IsPriority);
-                responseAPI.Data = "Successfully ";
-                responseAPI.Count = 1;
-                responseAPI.Message = "Load thành công!!";
-                return Ok(responseAPI);
-            }
-            catch (Exception ex)
-            {
-                responseAPI.Message = ex.Message;
-                return BadRequest(responseAPI);
-            }
-        }
+        //[HttpPost("UploadGoogleSearch_Goc")]
+        //public async Task<ActionResult> UploadGoogleSearch(IFormFile file, int RequestUserID, int IndustryIDUploadGoogleSearch, bool IsIndustryIDUploadGoogleSearch, bool IsPriority)
+        //{
+        //    ReponserApiService<string> responseAPI = new ReponserApiService<string>();
+        //    try
+        //    {
+        //        var data = await ICore.UploadGoogleSearch(file, RequestUserID, IndustryIDUploadGoogleSearch, IsIndustryIDUploadGoogleSearch, IsPriority);
+        //        responseAPI.Data = "Successfully ";
+        //        responseAPI.Count = 1;
+        //        responseAPI.Message = "Load thành công!!";
+        //        return Ok(responseAPI);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        responseAPI.Message = ex.Message;
+        //        return BadRequest(responseAPI);
+        //    }
+        //}
         //[HttpPost("SplitExcelFiles")]
         //public async Task<ActionResult> SplitExcelFiles(IFormFile file, int RequestUserID, int IndustryIDUploadGoogleSearch)
         //{
@@ -87,8 +87,6 @@ namespace CommSights_Api.Main.Controllers
         //        responseAPI.Message = ex.Message;
         //        return BadRequest(responseAPI);
         //    }
-
-
         //}
     }
 }

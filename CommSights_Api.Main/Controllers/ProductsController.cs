@@ -9,46 +9,7 @@ namespace CommSights_Api.Main.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly IProducts IPro;
-        public ProductsController(IProducts iPro) { this.IPro = iPro; }
-        [HttpGet("GetProduct")]
-        public async Task<ActionResult> GetProduct()
-        {
-            ReponserApiService<string> responseAPI = new ReponserApiService<string>();
-            try
-            {
-                responseAPI.Data= IPro.GetProducts();
-                responseAPI.Count = 12000000;
-                responseAPI.Message = "Load thành công!!";
-                return Ok(responseAPI);
-            }
-            catch (Exception ex)
-            {
-                responseAPI.Message = ex.Message;
-                return BadRequest(responseAPI);
-            }
-
-
-        }
-        [HttpGet("GetProduct2")]
-        public async Task<ActionResult> GetProduct2()
-        {
-            ReponserApiService<string> responseAPI = new ReponserApiService<string>();
-            try
-            {
-                var data = await IPro.GetProducts2();
-                responseAPI.Data = data;
-                responseAPI.Count = data.Count();
-                responseAPI.Message = "Load thành công!!";
-                return Ok(responseAPI);
-            }
-            catch (Exception ex)
-            {
-                responseAPI.Message = ex.Message;
-                return BadRequest(responseAPI);
-            }
-
-
-        }
+        
+       
     }
 }
