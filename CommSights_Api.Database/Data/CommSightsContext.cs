@@ -13,6 +13,7 @@ namespace CommSights_Api.Data.ModelCommSights
             : base(options)
         {
         }
+        public virtual DbSet<TmpUploadExcelMonthly> TmpUploadExcelMonthlies { get; set; }
         public virtual DbSet<ExcelUploadGoogleSearch> ExcelUploadGoogleSearches { get; set; }
         public virtual DbSet<ApiCountQuery> ApiCountQueries { get; set; }
         public virtual DbSet<ApiGoogle> ApiGoogles { get; set; }
@@ -64,6 +65,60 @@ namespace CommSights_Api.Data.ModelCommSights
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<TmpUploadExcelMonthly>(entity =>
+            {
+                entity.ToTable("TmpUploadExcelMonthly");
+
+                entity.Property(e => e.CorpCopy).HasColumnName("Corp_Copy");
+
+                entity.Property(e => e.FeatureCorp).HasColumnName("Feature_Corp");
+
+                entity.Property(e => e.FeatureProduct).HasColumnName("Feature_Product");
+
+                entity.Property(e => e.FeatureValue).HasColumnName("Feature_Value");
+
+                entity.Property(e => e.HeadlineValue).HasColumnName("Headline_Value");
+
+                entity.Property(e => e.MainCategory).HasColumnName("Main_Category");
+
+                entity.Property(e => e.Mps).HasColumnName("MPS");
+
+                entity.Property(e => e.PictureValue).HasColumnName("Picture_Value");
+
+                entity.Property(e => e.ProductName).HasColumnName("Product_Name");
+
+                entity.Property(e => e.RomeCorp).HasColumnName("ROME_Corp");
+
+                entity.Property(e => e.RomeProduct).HasColumnName("ROME_Product");
+
+                entity.Property(e => e.SegmentProduct).HasColumnName("Segment_Product");
+
+                entity.Property(e => e.SentimentCorp).HasColumnName("Sentiment_Corp");
+
+                entity.Property(e => e.SentimentProduct).HasColumnName("Sentiment_Product");
+
+                entity.Property(e => e.SoeCorp).HasColumnName("SOE_Corp");
+
+                entity.Property(e => e.SoeProduct).HasColumnName("SOE_Product");
+
+                entity.Property(e => e.SpokePersonName).HasColumnName("Spoke_Person_Name");
+
+                entity.Property(e => e.SpokePersonTitle).HasColumnName("Spoke_Person_Title");
+
+                entity.Property(e => e.SpokePersonValue).HasColumnName("Spoke_Person_Value");
+
+                entity.Property(e => e.SubCategory).HasColumnName("Sub_Category");
+
+                entity.Property(e => e.TierCommSights).HasColumnName("Tier_CommSights");
+
+                entity.Property(e => e.TierCustomer).HasColumnName("Tier_Customer");
+
+                entity.Property(e => e.TierValue).HasColumnName("Tier_Value");
+
+                entity.Property(e => e.ToneValue).HasColumnName("Tone_Value");
+
+                entity.Property(e => e.Url).HasColumnName("URL");
+            });
             modelBuilder.Entity<ApiCountQuery>(entity =>
             {
                 entity.ToTable("API_CountQuery");

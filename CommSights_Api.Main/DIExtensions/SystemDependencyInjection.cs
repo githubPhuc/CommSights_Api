@@ -11,6 +11,7 @@ namespace CommSights_Api.Main.DIExtensions
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             services.AddScoped<ICoreUploadGoogleSearch, CoreUploadGoogleSearchService>();
+            services.AddScoped<IQcMonthly, QcMonthlyService>();
             services.AddScoped<IConfigRepository, ConfigRepositoryService>();
             services.AddScoped<IMembershipPermissionRepository, MembershipPermissionRepositoryServices>();
             services.AddScoped<IProductPropertyRepository, ProductPropertyRepositoryService>();

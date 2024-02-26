@@ -62,12 +62,6 @@ namespace CommSights_Api.Abstractions.Services
                                 else
                                 {
                                     int totalRows = worksheet.Dimension.Rows;
-                                    var CountS = db_.ExcelUploadGoogleSearches.AsNoTracking().Count();
-                                    if (CountS > 0)
-                                    {
-                                        db_.ExcelUploadGoogleSearches.ToList().ForEach(p => db_.ExcelUploadGoogleSearches.Remove(p));
-                                        await db_.SaveChangesAsync();
-                                    }
                                     var baiVietUploadCount = new BaiVietUploadCount
                                     {
                                         Count = totalRows - 1,
@@ -80,7 +74,6 @@ namespace CommSights_Api.Abstractions.Services
                                     };
                                     await db_.BaiVietUploadCounts.AddAsync(baiVietUploadCount);
                                     await db_.SaveChangesAsync();
-
                                     var dataToInsert = new List<ExcelUploadGoogleSearch>();
                                     for (int row = 2; row <= totalRows; row++)
                                     {
@@ -101,15 +94,13 @@ namespace CommSights_Api.Abstractions.Services
                                             Product = worksheet.Cells[row, 11].Value?.ToString() ?? null
                                         });
                                     }
-                                    using (var context = new CommSightsContext())
-                                    {
-                                        context.ChangeTracker.AutoDetectChangesEnabled = false;
-                                        await context.ExcelUploadGoogleSearches.AddRangeAsync(dataToInsert);
-                                        await context.SaveChangesAsync();
-                                        context.ChangeTracker.AutoDetectChangesEnabled = true;
-                                    }
-
-
+                                    //using (var context = new CommSightsContext())
+                                    //{
+                                    //    context.ChangeTracker.AutoDetectChangesEnabled = false;
+                                    //    await context.ExcelUploadGoogleSearches.AddRangeAsync(dataToInsert);
+                                    //    await context.SaveChangesAsync();
+                                    //    context.ChangeTracker.AutoDetectChangesEnabled = true;
+                                    //}
                                     int batchSize = totalRows >= 100 ? totalRows / 10 : totalRows;
                                     var dataReponse = new SplitExcelModelView()
                                     {
@@ -144,6 +135,7 @@ namespace CommSights_Api.Abstractions.Services
             {
                 if(file.Count()>0)
                 {
+                    //var insertedIds = new List<int>();
                     var dataProduct = db_.Products.AsNoTracking();
                     var dataConfig = db_.Configs.AsNoTracking();
                     var dataMembershipPermission = db_.MembershipPermissions.AsNoTracking();
@@ -154,6 +146,7 @@ namespace CommSights_Api.Abstractions.Services
                     {
                         try
                         {
+                            //insertedIds.Add(item.Id);
                             var model = new Product()
                             {
                                 Note = fileName,
@@ -451,12 +444,16 @@ namespace CommSights_Api.Abstractions.Services
                                     }
                                 }
                             }
+
                         }
                         catch (Exception ex)
                         {
                             throw new Exception(ex.Message);
                         }
                     }
+                    //var itemsToRemove = db_.ExcelUploadGoogleSearches.Where(item => insertedIds.Contains(item.Id)).AsNoTracking();
+                    //db_.ExcelUploadGoogleSearches.RemoveRange(itemsToRemove);
+                    await db_.SaveChangesAsync();
                     return true;
                 }
                 else
