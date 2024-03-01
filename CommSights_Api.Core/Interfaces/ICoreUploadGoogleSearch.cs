@@ -1,5 +1,5 @@
 ﻿using CommSights_Api.Database.ModelCommSights;
-using CommSights_Api.Database.ModelViews;
+using CommSights_Api.Database.ModelViews.CoreUploadGoogleModelView;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;

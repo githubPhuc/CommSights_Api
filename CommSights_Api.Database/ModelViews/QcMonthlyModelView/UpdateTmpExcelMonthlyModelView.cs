@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace CommSights_Api.Database.ModelCommSights
+namespace CommSights_Api.Database.ModelViews.QcMonthlyModelView
 {
-    public partial class TmpUploadExcelMonthly
+    public class UpdateTmpExcelMonthlyModelView
     {
-        public int Id { get; set; }
         public string? Source { get; set; }
         public string? Date { get; set; }
         public string? MainCategory { get; set; }

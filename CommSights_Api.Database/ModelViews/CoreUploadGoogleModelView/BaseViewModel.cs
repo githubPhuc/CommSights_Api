@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CommSights_Api.Database.ModelViews
+namespace CommSights_Api.Database.ModelViews.CoreUploadGoogleModelView
 {
-    public  class BaseViewModel
+    public class BaseViewModel
     {
         public int ID { get; set; }
 

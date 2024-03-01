@@ -13,7 +13,6 @@ namespace CommSights_Api.Data.ModelCommSights
             : base(options)
         {
         }
-        public virtual DbSet<TmpUploadExcelMonthly> TmpUploadExcelMonthlies { get; set; }
         public virtual DbSet<ExcelUploadGoogleSearch> ExcelUploadGoogleSearches { get; set; }
         public virtual DbSet<ApiCountQuery> ApiCountQueries { get; set; }
         public virtual DbSet<ApiGoogle> ApiGoogles { get; set; }
@@ -49,6 +48,7 @@ namespace CommSights_Api.Data.ModelCommSights
         public virtual DbSet<ProductTest> ProductTests { get; set; }
         public virtual DbSet<ReportMonthly> ReportMonthlies { get; set; }
         public virtual DbSet<ReportMonthlyProperty> ReportMonthlyProperties { get; set; }
+        public virtual DbSet<TmpUploadExcelMonthl> TmpUploadExcelMonthls { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -65,60 +65,6 @@ namespace CommSights_Api.Data.ModelCommSights
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<TmpUploadExcelMonthly>(entity =>
-            {
-                entity.ToTable("TmpUploadExcelMonthly");
-
-                entity.Property(e => e.CorpCopy).HasColumnName("Corp_Copy");
-
-                entity.Property(e => e.FeatureCorp).HasColumnName("Feature_Corp");
-
-                entity.Property(e => e.FeatureProduct).HasColumnName("Feature_Product");
-
-                entity.Property(e => e.FeatureValue).HasColumnName("Feature_Value");
-
-                entity.Property(e => e.HeadlineValue).HasColumnName("Headline_Value");
-
-                entity.Property(e => e.MainCategory).HasColumnName("Main_Category");
-
-                entity.Property(e => e.Mps).HasColumnName("MPS");
-
-                entity.Property(e => e.PictureValue).HasColumnName("Picture_Value");
-
-                entity.Property(e => e.ProductName).HasColumnName("Product_Name");
-
-                entity.Property(e => e.RomeCorp).HasColumnName("ROME_Corp");
-
-                entity.Property(e => e.RomeProduct).HasColumnName("ROME_Product");
-
-                entity.Property(e => e.SegmentProduct).HasColumnName("Segment_Product");
-
-                entity.Property(e => e.SentimentCorp).HasColumnName("Sentiment_Corp");
-
-                entity.Property(e => e.SentimentProduct).HasColumnName("Sentiment_Product");
-
-                entity.Property(e => e.SoeCorp).HasColumnName("SOE_Corp");
-
-                entity.Property(e => e.SoeProduct).HasColumnName("SOE_Product");
-
-                entity.Property(e => e.SpokePersonName).HasColumnName("Spoke_Person_Name");
-
-                entity.Property(e => e.SpokePersonTitle).HasColumnName("Spoke_Person_Title");
-
-                entity.Property(e => e.SpokePersonValue).HasColumnName("Spoke_Person_Value");
-
-                entity.Property(e => e.SubCategory).HasColumnName("Sub_Category");
-
-                entity.Property(e => e.TierCommSights).HasColumnName("Tier_CommSights");
-
-                entity.Property(e => e.TierCustomer).HasColumnName("Tier_Customer");
-
-                entity.Property(e => e.TierValue).HasColumnName("Tier_Value");
-
-                entity.Property(e => e.ToneValue).HasColumnName("Tone_Value");
-
-                entity.Property(e => e.Url).HasColumnName("URL");
-            });
             modelBuilder.Entity<ApiCountQuery>(entity =>
             {
                 entity.ToTable("API_CountQuery");
@@ -1638,6 +1584,124 @@ namespace CommSights_Api.Data.ModelCommSights
                 entity.Property(e => e.ProductId).HasColumnName("ProductID");
 
                 entity.Property(e => e.ProductPropertyId).HasColumnName("ProductPropertyID");
+            });
+            modelBuilder.Entity<TmpUploadExcelMonthl>(entity =>
+            {
+                entity.ToTable("TmpUploadExcelMonthl");
+
+                entity.Property(e => e.Advalue).IsUnicode(false);
+
+                entity.Property(e => e.ColorCompany).IsUnicode(false);
+
+                entity.Property(e => e.ColorCorpCopy).IsUnicode(false);
+
+                entity.Property(e => e.ColorFeatureCorp).IsUnicode(false);
+
+                entity.Property(e => e.ColorFeatureProduct).IsUnicode(false);
+
+                entity.Property(e => e.ColorHeadline).IsUnicode(false);
+
+                entity.Property(e => e.ColorHeadlineEnglish).IsUnicode(false);
+
+                entity.Property(e => e.ColorHeadlineEnglishHyperLink).IsUnicode(false);
+
+                entity.Property(e => e.ColorHeadlineHyperLink).IsUnicode(false);
+
+                entity.Property(e => e.ColorProductName).IsUnicode(false);
+
+                entity.Property(e => e.ColorSegmentProduct).IsUnicode(false);
+
+                entity.Property(e => e.ColorSentimentCorp).IsUnicode(false);
+
+                entity.Property(e => e.ColorSentimentProduct).IsUnicode(false);
+
+                entity.Property(e => e.ColorSoeCorp).IsUnicode(false);
+
+                entity.Property(e => e.ColorSoeProduct).IsUnicode(false);
+
+                entity.Property(e => e.ColorUrl).IsUnicode(false);
+
+                entity.Property(e => e.Company).IsUnicode(false);
+
+                entity.Property(e => e.CorpCopy).IsUnicode(false);
+
+                entity.Property(e => e.Date).IsUnicode(false);
+
+                entity.Property(e => e.DateCreated).HasColumnType("datetime");
+
+                entity.Property(e => e.Duration).IsUnicode(false);
+
+                entity.Property(e => e.FeatureCorp).IsUnicode(false);
+
+                entity.Property(e => e.FeatureProduct).IsUnicode(false);
+
+                entity.Property(e => e.FeatureValue).IsUnicode(false);
+
+                entity.Property(e => e.FileName)
+                    .IsUnicode(false)
+                    .HasColumnName("fileName");
+
+                entity.Property(e => e.Headline).IsUnicode(false);
+
+                entity.Property(e => e.HeadlineEnglish).IsUnicode(false);
+
+                entity.Property(e => e.HeadlineEnglishHyperLink).IsUnicode(false);
+
+                entity.Property(e => e.HeadlineHyperLink).IsUnicode(false);
+
+                entity.Property(e => e.HeadlineValue).IsUnicode(false);
+
+                entity.Property(e => e.Journalist).IsUnicode(false);
+
+                entity.Property(e => e.MainCategory).IsUnicode(false);
+
+                entity.Property(e => e.MediaTitle).IsUnicode(false);
+
+                entity.Property(e => e.MediaType).IsUnicode(false);
+
+                entity.Property(e => e.Mps).IsUnicode(false);
+
+                entity.Property(e => e.Page).IsUnicode(false);
+
+                entity.Property(e => e.PictureValue).IsUnicode(false);
+
+                entity.Property(e => e.ProductName).IsUnicode(false);
+
+                entity.Property(e => e.RomeCorp).IsUnicode(false);
+
+                entity.Property(e => e.RomeProduct).IsUnicode(false);
+
+                entity.Property(e => e.SegmentProduct).IsUnicode(false);
+
+                entity.Property(e => e.SentimentCorp).IsUnicode(false);
+
+                entity.Property(e => e.SentimentProduct).IsUnicode(false);
+
+                entity.Property(e => e.SoeCorp).IsUnicode(false);
+
+                entity.Property(e => e.SoeProduct).IsUnicode(false);
+
+                entity.Property(e => e.Source).IsUnicode(false);
+
+                entity.Property(e => e.SpokePersonName).IsUnicode(false);
+
+                entity.Property(e => e.SpokePersonTitle).IsUnicode(false);
+
+                entity.Property(e => e.SpokePersonValue).IsUnicode(false);
+
+                entity.Property(e => e.SubCategory).IsUnicode(false);
+
+                entity.Property(e => e.TierCommSights).IsUnicode(false);
+
+                entity.Property(e => e.TierCustomer).IsUnicode(false);
+
+                entity.Property(e => e.TierValue).IsUnicode(false);
+
+                entity.Property(e => e.ToneValue).IsUnicode(false);
+
+                entity.Property(e => e.Url).IsUnicode(false);
+
+                entity.Property(e => e.Username).IsUnicode(false);
             });
 
             OnModelCreatingPartial(modelBuilder);

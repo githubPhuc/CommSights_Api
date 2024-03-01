@@ -9,7 +9,7 @@ using CommSights_Api.Library.Helps;
 using CommSights_Api.Abstractions.Utilities;
 using System.Runtime.InteropServices.ComTypes;
 using System;
-using CommSights_Api.Database.ModelViews;
+using CommSights_Api.Database.ModelViews.CoreUploadGoogleModelView;
 
 
 namespace CommSights_Api.Abstractions.Services

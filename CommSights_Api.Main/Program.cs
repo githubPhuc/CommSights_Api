@@ -26,6 +26,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddRepositories();
 builder.Services.AddSystemJwtIdentity(builder.Configuration);
 builder.Services.AddSystemDatabase(builder.Configuration);
+builder.Services.AddMapper();
 var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI(c =>
@@ -42,4 +43,6 @@ app.UseAuthorization();
 app.UseSession();
 app.MapControllers();
 app.Run();
+//update model
+//Scaffold-DbContext "Data Source=103.147.122.150;Initial Catalog=CommSights;Persist Security Info=True;User ID=sa;Password=@@@CommSights123@@@;Trust Server Certificate=True" Microsoft.EntityFrameworkCore.SqlServer -OutputDir  fordelname
 
