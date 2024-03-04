@@ -2,6 +2,7 @@
 using CommSights_Api.Core.Interfaces;
 using CommSights_Api.Database.ModelCommSights;
 using CommSights_Api.Database.ModelViews;
+using CommSights_Api.Database.ModelViews.QcMonthlyModelView;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,12 +22,12 @@ namespace CommSights_Api.Main.Controllers
             this.serviceProvider = serviceProvider;
         }
         [HttpGet("GetListTmpUploadExcelMonthly")]
-        public async Task<ActionResult> GetListTmpUploadExcelMonthly(int pageSize = 200, int pageNumber = 1)
+        public async Task<ActionResult> GetListTmpUploadExcelMonthly(int pageSize = 200, int pageNumber = 1,string filename="",int RequestUserID=6637)
         {
             ReponserApiService<string> responseAPI = new ReponserApiService<string>();
             try
             {
-                var data = await IQc.GetListTmpUploadExcelMonthly(pageSize, pageNumber);
+                var data = await IQc.GetListTmpUploadExcelMonthly(pageSize, pageNumber, filename, RequestUserID);
                 responseAPI.Data = data;
                 responseAPI.Count = data.Count();
                 responseAPI.Message = "Load thành công!!";
@@ -38,28 +39,47 @@ namespace CommSights_Api.Main.Controllers
                 return BadRequest(responseAPI);
             }
         }
-        [HttpPost("UpExcelToTmp")]
+        [HttpGet("getListNameFile")]
+        public async Task<ActionResult> getListNameFile(int RequestUserID)
+        {
+            ReponserApiService<string> responseAPI = new ReponserApiService<string>();
+            try
+            {
+                var data = await IQc.getListNameFile(RequestUserID);
+                responseAPI.Data = data;
+                responseAPI.Count = data.Count();
+                responseAPI.Message = "Load thành công!!";
+                return Ok(responseAPI);
+            }
+            catch (Exception ex)
+            {
+                responseAPI.Message = ex.Message;
+                return BadRequest(responseAPI);
+            }
+        }
+        [HttpPost("UploadAndCheckExcel")]
         public async Task<ActionResult> UpExcelToTmp(IFormFile file, int RequestUserID)
         {
             ReponserApiService<string> responseAPI = new ReponserApiService<string>();
             try
             {
                 var data = await IQc.UpExcelToTmp(file, RequestUserID);
-                var result = new List<TmpUploadExcelMonthl>();
                 var tasks = data.UploadExcelMonthlyModelVies.Select(async batch =>
                 {
                     using (var scope = serviceProvider.CreateScope())
                     {
                         var scopedCore = scope.ServiceProvider.GetRequiredService<IQcMonthly>();
-                        var Repon = await scopedCore.InsertDataTmp(batch);
-                        foreach (var item in Repon)
-                        {
-                            result.Add(item);
-                        };
+                        await scopedCore.InsertDataTmp(batch);
                     }
                 });
                 await Task.WhenAll(tasks);
-                responseAPI.Data = result.OrderBy(a=>a.Headline).ToList();
+                var repon = new ReponUploadQcMonthly()
+                {
+                    nameFile = data.fileName,
+                    totalCount = data.countArr,
+                    usernameId = RequestUserID,
+                };
+                responseAPI.Data = repon;
                 responseAPI.Count = data.UploadExcelMonthlyModelVies.Count();
                 responseAPI.Message = "Load thành công!!";
                 return Ok(responseAPI);

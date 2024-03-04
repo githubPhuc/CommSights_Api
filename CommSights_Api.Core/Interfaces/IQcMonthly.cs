@@ -11,9 +11,10 @@ namespace CommSights_Api.Core.Interfaces
 {
     public interface IQcMonthly
     {
-        public Task<List<TmpUploadExcelMonthl>> GetListTmpUploadExcelMonthly(int pageSize, int pageNumber);
+        public Task<List<ListNameFileModelView>> getListNameFile(int RequestUserID);
+        public Task<List<TmpUploadExcelMonthl>> GetListTmpUploadExcelMonthly(int pageSize, int pageNumber, string filename, int RequestUserID);
         public Task<ExcelMonthlyModelView> UpExcelToTmp(IFormFile file, int RequestUserID);
-        public Task<List<TmpUploadExcelMonthl>> InsertDataTmp(List<UploadExcelMonthlyModelView> Arr);
+        public Task<bool> InsertDataTmp(List<UploadExcelMonthlyModelView> Arr);
         //public Task<List<UploadExcelMonthlyModelView>> CoreQc(List<UploadExcelMonthlyModelView> Arr);
     }
 }

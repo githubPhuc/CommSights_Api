@@ -8,12 +8,6 @@ using CommSights_Api.Library.Helps;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace CommSights_Api.Abstractions.Services
 {
@@ -26,14 +20,43 @@ namespace CommSights_Api.Abstractions.Services
             db_ = context;
             this.appGlobal = appGlobal;
         }
-        public async Task<List<TmpUploadExcelMonthl>> GetListTmpUploadExcelMonthly(int pageSize, int pageNumber)
+        public async Task<List<TmpUploadExcelMonthl>> GetListTmpUploadExcelMonthly(int pageSize, int pageNumber, string filename, int RequestUserID)
         {
             try
             {
-                var data = db_.TmpUploadExcelMonthls.AsNoTracking();
-                return await db_.TmpUploadExcelMonthls.AsNoTracking().OrderBy(p => p.Headline).Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+                var results = await db_.TmpUploadExcelMonthls
+                    .Where(a => a.Username == RequestUserID && a.FileName == filename)
+                    .OrderBy(p => p.Headline)
+                    .Skip((pageNumber - 1) * pageSize)
+                    .Take(pageSize)
+                    .AsNoTracking()
+                    .ToListAsync();
+                return results;
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+
+        public async Task<List<ListNameFileModelView>> getListNameFile(int RequestUserID)
+        {
+            try
+            {
+                var data = db_.TmpUploadExcelMonthls.AsNoTracking().Where(a=>a.Username==RequestUserID).GroupBy(row => new { row.FileName,row.DateCreated })
+                    .Select(grp => new ListNameFileModelView
+                    {
+                        FileName = grp.Key.FileName,
+                        DateCreated = (DateTime)grp.Key.DateCreated,
+                        Count = grp.ToList().Count()
+                    }).ToList(); 
+
+                return data;
+            }catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
         /// <summary>
         /// Đọc file excel
@@ -71,12 +94,13 @@ namespace CommSights_Api.Abstractions.Services
                                 {
                                     int totalRows = worksheet.Dimension.Rows;
                                     var dataToInsert = new List<UploadExcelMonthlyModelView>();
+                                    DateTime time_ = DateTime.UtcNow.AddHours(7);
                                     for (int row = 2; row <= totalRows; row++)
                                     {
                                         dataToInsert.Add(new UploadExcelMonthlyModelView
                                         {
                                             Username= RequestUserID,
-                                            DateCreated= DateTime.UtcNow.AddHours(7),
+                                            DateCreated= time_,
                                             FileName = fileName,
                                             Source = worksheet.Cells[row, 1].Value?.ToString() ?? "",
                                             Date = worksheet.Cells[row, 2].Value?.ToString() ?? "",
@@ -134,6 +158,7 @@ namespace CommSights_Api.Abstractions.Services
                                     int batchSize = totalRows >= 10000 ? totalRows / (totalRows / 1000) : totalRows >= 1000 ? totalRows / (totalRows / 100) : totalRows >= 100 ? totalRows / (totalRows / 10) : totalRows;
                                     var dataReponse = new ExcelMonthlyModelView()
                                     {
+                                        countArr = dataToInsert.Count(),
                                         UploadExcelMonthlyModelVies = result.Select((x, index) => new { Index = index, Value = x })
                                                .GroupBy(x => x.Index / batchSize)
                                                .Select(g => g.Select(x => x.Value).ToList())
@@ -160,7 +185,7 @@ namespace CommSights_Api.Abstractions.Services
         /// <param name="Arr"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task<List<TmpUploadExcelMonthl>> InsertDataTmp(List<UploadExcelMonthlyModelView> Arr)
+        public async Task<bool> InsertDataTmp(List<UploadExcelMonthlyModelView> Arr)
         {
             try
             {
@@ -171,14 +196,7 @@ namespace CommSights_Api.Abstractions.Services
                 await db_.TmpUploadExcelMonthls.AddRangeAsync(entityList);
                 await db_.SaveChangesAsync();
                 db_.ChangeTracker.AutoDetectChangesEnabled = true;
-                //using (var context = new CommSightsContext())
-                //{
-                //    context.ChangeTracker.AutoDetectChangesEnabled = false;
-                //    await context.TmpUploadExcelMonthls.AddRangeAsync(entityList);
-                //    await context.SaveChangesAsync();
-                //    context.ChangeTracker.AutoDetectChangesEnabled = true;
-                //}
-                return entityList;
+                return true;
             }catch(Exception ex) { throw new Exception(ex.Message); }
         }
 
@@ -198,7 +216,7 @@ namespace CommSights_Api.Abstractions.Services
             catch(Exception ex) { throw new Exception(ex.Message); }
         }    
         /// <summary>
-        /// tìm dòng dùng headline
+        /// tìm dòng cùng headline
         /// </summary>
         /// <param name="Arr"></param>
         /// <returns></returns>

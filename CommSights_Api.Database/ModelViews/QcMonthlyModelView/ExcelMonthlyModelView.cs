@@ -11,5 +11,6 @@ namespace CommSights_Api.Database.ModelViews.QcMonthlyModelView
     {
         public List<List<UploadExcelMonthlyModelView>> UploadExcelMonthlyModelVies { get; set; }
         public string fileName { get; set; }
+        public int countArr { get; set; }
     }
 }
