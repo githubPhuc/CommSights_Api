@@ -27,9 +27,9 @@ namespace CommSights_Api.Main.Controllers
             ReponserApiService<string> responseAPI = new ReponserApiService<string>();
             try
             {
-                var data = await IQc.GetListTmpUploadExcelMonthly(pageSize, pageNumber, filename, RequestUserID);
-                responseAPI.Data = data;
-                responseAPI.Count = data.Count();
+                var data = await IQc.GetListTmpUploadExcelMonthlyWithTotalPages(pageSize, pageNumber, filename, RequestUserID);
+                responseAPI.Data = data.results;
+                responseAPI.Count = data.totalPages;
                 responseAPI.Message = "Load thành công!!";
                 return Ok(responseAPI);
             }

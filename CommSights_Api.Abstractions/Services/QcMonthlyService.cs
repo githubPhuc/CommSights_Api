@@ -20,18 +20,20 @@ namespace CommSights_Api.Abstractions.Services
             db_ = context;
             this.appGlobal = appGlobal;
         }
-        public async Task<List<TmpUploadExcelMonthl>> GetListTmpUploadExcelMonthly(int pageSize, int pageNumber, string filename, int RequestUserID)
+        public async Task<(List<TmpUploadExcelMonthl> results, int totalPages)> GetListTmpUploadExcelMonthlyWithTotalPages(int pageSize, int pageNumber, string filename, int RequestUserID)
         {
             try
-            {
-                var results = await db_.TmpUploadExcelMonthls
-                    .Where(a => a.Username == RequestUserID && a.FileName == filename)
+            { 
+                var data = db_.TmpUploadExcelMonthls
+                    .Where(a => a.Username == RequestUserID && a.FileName == filename).AsNoTracking();
+                var totalPages = (int)Math.Ceiling(data.Count() / (double)pageSize);
+                var results = await data
                     .OrderBy(p => p.Headline)
                     .Skip((pageNumber - 1) * pageSize)
                     .Take(pageSize)
-                    .AsNoTracking()
                     .ToListAsync();
-                return results;
+
+                return (results, totalPages);
             }
             catch (Exception ex)
             {
